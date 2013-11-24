@@ -1,8 +1,5 @@
-#
-# Cookbook Name:: deploy
-# Recipe:: web-restart
-
 include_recipe 'deploy'
+include_recipe "nginx::service"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'nodejs'
@@ -10,8 +7,8 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  service 'nginx' do
-    supports :status => true, :restart => true, :reload => true
-    action :restart
+  nodejs_app application do
+    application deploy
+    cookbook "nginx"
   end
 end
