@@ -4,6 +4,10 @@ license           "Apache 2.0"
 description       "Installs and configures nginx"
 version           "0.8"
 
+recipe "nginx::proxy-deploy", "Nginx NodeJs Proxy Deploy"
+recipe "nginx::proxy-undeploy", "Nginx NodeJs Proxy Undeploy"
+
+
 %w{ ubuntu debian }.each do |os|
   supports os
 end
