@@ -4,18 +4,24 @@
 NGINX='<%= node[:nginx][:dir] %>'
 APP_NAME=$1
 APP_DIR=$2/current
-APP_DOMAINS=`echo $3 | sed 's/,/ /g'`
+APP_DOMAINS=`echo $3 | sed 's/,/ /g' | tr -d ' '`
 
 #-- Retrieve Proxy ip and port from package.json --#
-APP_IP=`sed -n 's/[\t ]*"proxy":[\t ]*"\([^"]*\).*/\1/p' $APP_DIR/package.json`
-APP_PORT=`sed -n 's/[\t ]*"port":[\t ]*"\([^"]*\).*/\1/p' $APP_DIR/package.json`
+if [ -f $APP_DIR/package.json ]
+then
+	APP_IP=`sed -n 's/[[:space:]]*"proxy"[[:space:]]*:[[:space:]]*"\([^"]*\).*/\1/p' $APP_DIR/package.json`
+	APP_PORT=`sed -n 's/[[:space:]]*"port"[[:space:]]*:[[:space:]]*"\([^"]*\).*/\1/p' $APP_DIR/package.json`
+fi
+
 
 #-- Available Proxy Website --#
-echo "server {
+if [ -n "$APP_DOMAINS" ] && [ -n "$APP_IP" ] && [ -n "$APP_PORT" ]
+then     
+	echo "server {
 	listen 80;
 	server_name $APP_DOMAINS;
 	location / {
 		proxy_pass http://$APP_IP:$APP_PORT/;
 	}
-}
-"> $NGINX/vhost.d/$APP_NAME.conf
+}"> $NGINX/sites-enabled/$APP_NAME.conf
+fi

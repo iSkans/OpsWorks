@@ -1,7 +1,11 @@
 #!/bin/bash
 
+#-- Configuration --#
 NGINX='<%= node[:nginx][:dir] %>'
+APP_NAME=$1
 
-echo "
-$@
-"> $NGINX/vhost.d/dissite-$1
+#-- Disable Proxy Website --#
+if [ -f $NGINX/sites-enabled/$APP_NAME.conf ]
+then
+	rm -f $NGINX/sites-enabled/$APP_NAME.conf
+fi
