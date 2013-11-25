@@ -7,7 +7,7 @@ node[:deploy].each do |application, deploy|
 		next
 	end	
 	execute "proxy2ensite #{application} #{deploy[:deploy_to]}" do
-		command "/usr/sbin/proxy2ensite #{application}"
+		command "/usr/sbin/proxy2ensite #{application} #{deploy[:deploy_to]}"
 		notifies :reload, "service[nginx]"
 	end
 end
