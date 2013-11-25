@@ -10,7 +10,7 @@ node[:deploy].each do |application, deploy|
 	bash "site_available" do
 		user "root"
 		cwd "#{deploy[:deploy_to]}/current"    
-		code<<-EOF
+		code <<-EOH
 IP=`sed -n 's/[\t ]*"proxy":[\t ]*"\([^"]*\).*/\1/p' package.json`
 PORT=`sed -n 's/[\t ]*"port":[\t ]*"\([^"]*\).*/\1/p' package.json`
 echo "server {
@@ -20,7 +20,7 @@ echo "server {
 		proxy_pass http://$IP:$PORT/;
 	}
 }" > titi
-EOF
+EOH
 		environment({"DOMAINS" => "api.mangakas.fr"})
 	end
 end
