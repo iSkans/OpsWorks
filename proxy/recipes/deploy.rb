@@ -20,7 +20,7 @@ echo "server {
 	}
 }" > titi
 EOF
-		environment { "DOMAINS" => "api.mangakas.fr"}
+		environment({"DOMAINS" => "api.mangakas.fr"})
 	end
 end
  
