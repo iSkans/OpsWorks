@@ -6,10 +6,9 @@ node[:deploy].each do |application, deploy|
 	if deploy[:application_type] != 'nodejs'
 		next
 	end	
-	Chef::Log.info("Application domains : #{deploy[:domains].join(',')}")
 	Chef::Log.info("Deploy Proxy Configuration to Nginx.")
 	execute "proxy2ensite #{application} #{deploy[:deploy_to]}" do
-		command "/usr/sbin/proxy2ensite #{application} #{deploy[:deploy_to]} #{deploy[:application_name]}"
+		command "/usr/sbin/proxy2ensite #{application} #{deploy[:deploy_to]} #{deploy[:domains].join(',')}"
 		notifies :reload, "service[nginx]"
 	end
 end
