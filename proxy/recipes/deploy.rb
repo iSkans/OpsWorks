@@ -6,7 +6,7 @@ node[:deploy].each do |application, deploy|
 	if deploy[:application_type] != 'nodejs'
 		next
 	end	
-	execute "proxy2ensite #{application}" do
+	execute "proxy2ensite #{application} #{deploy[:deploy_to]}" do
 		command "/usr/sbin/proxy2ensite #{application}"
 		notifies :reload, "service[nginx]"
 	end
