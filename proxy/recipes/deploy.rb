@@ -1,6 +1,7 @@
 include_recipe 'deploy'
 include_recipe "nginx::service"
 
+Chef::Log.info("Deploy Proxy Configuration to Nginx.")
 node[:deploy].each do |application, deploy|
 	if deploy[:application_type] != 'nodejs'
     	next
