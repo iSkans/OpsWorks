@@ -3,7 +3,7 @@
 #-- Configuration --#
 NGINX='<%= node[:nginx][:dir] %>'
 APP_NAME=$1
-APP_DIR=$2
+APP_DIR=$2/current
 
 #-- Retrieve Proxy ip and port from package.json --#
 IP=`sed -n 's/[\t ]*"proxy":[\t ]*"\([^"]*\).*/\1/p' $APP_DIR/package.json`
