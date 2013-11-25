@@ -10,8 +10,8 @@ node[:deploy].each do |application, deploy|
 		user "root"
 		cwd "#{deploy[:deploy_to]}/current"    
 		code<<-EOF
-IP=`sed -n 's/[\t ]*"proxy":[\t ]*"\([^"]*\).*/\1/p' $PATH/package.json`
-PORT=`sed -n 's/[\t ]*"port":[\t ]*"\([^"]*\).*/\1/p' $PATH/package.json`
+IP=`sed -n 's/[\t ]*"proxy":[\t ]*"\([^"]*\).*/\1/p' package.json`
+PORT=`sed -n 's/[\t ]*"port":[\t ]*"\([^"]*\).*/\1/p' package.json`
 echo "server {
 	listen 80;
 	server_name $DOMAINS;
@@ -20,7 +20,7 @@ echo "server {
 	}
 }" > titi
 EOF
-		environment { 'PATH' => "#{deploy[:deploy_to]}/current", "DOMAINS" => "api.mangakas.fr"}
+		environment { "DOMAINS" => "api.mangakas.fr"}
 	end
 end
  
