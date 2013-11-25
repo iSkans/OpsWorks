@@ -1,0 +1,7 @@
+#!/bin/bash
+
+NGINX='<%= node[:nginx][:dir] %>'
+
+echo "
+$@
+"> $NGINX/vhost.d/dissite-$1
