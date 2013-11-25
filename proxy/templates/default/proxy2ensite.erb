@@ -4,7 +4,7 @@
 NGINX='<%= node[:nginx][:dir] %>'
 APP_NAME=$1
 APP_DIR=$2/current
-APP_DOMAINS=`echo $3 | sed 's/,/ /g' | tr -d ' '`
+APP_DOMAINS=`echo $3 | sed 's/,/ /g'`
 
 #-- Retrieve Proxy ip and port from package.json --#
 if [ -f $APP_DIR/package.json ]
