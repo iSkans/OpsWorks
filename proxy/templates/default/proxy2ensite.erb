@@ -44,7 +44,7 @@ then
 	then
 		echo "server {
 	listen 80;
-	server_name $APP_DOMAINS;
+	server_name $SERVERNAMES;
 	location / {
 		proxy_pass http://$APP_IP:$APP_PORT/;
 	}
