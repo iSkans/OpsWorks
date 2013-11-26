@@ -12,15 +12,14 @@ node[:deploy].each do |application, deploy|
 	end
 	
 	Chef::Log.info("Restart NodeJS Application #{application}.")
+	Chef::Log.info("Restart Current PAth #{application}.")
 	execute "Restart NodeJS Application #{application}." do
 		cwd deploy[:current_path]
-		command "sleep #{node[:deploy][application][:nodejs][:sleep_before_restart]} && #{node[:deploy][application][:nodejs][:restart_command]}"
+		command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
 		action :run
 		only_if do 
 			File.exists?(deploy[:current_path])
 		end
 	end
-  end
-	
 end
 
