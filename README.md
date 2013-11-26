@@ -1,4 +1,4 @@
-AWS OpsWorks Nginx Proxy For NoadeJs App
-========================================
+AWS OpsWorks Nginx NodeJs Proxy
+===============================
 
 Add Nginx Proxy To Node Js Application
