@@ -21,12 +21,12 @@ then
 	DOMAINS=$(echo $APP_DOMAINS | tr " " "\n")
 	for DOMAIN in $DOMAINS
 	do
-		REDIR=`echo $DOMAIN | grep '^[^.]*\.[^.]*$'`
+		REDIR=`echo $DOMAIN | grep '^[^.]*\.[^.]*$'`
 		if [ -n "$REDIR" ]
 		then
 			echo "server {
 	server_name $REDIR;
-	rewrite ^(.*) http://$REDIR\$\1 permanent;
+	rewrite ^(.*) http://$REDIR\$1 permanent;
 }">> $NGINX/sites-enabled/$APP_NAME.conf
 		fi
 	done
