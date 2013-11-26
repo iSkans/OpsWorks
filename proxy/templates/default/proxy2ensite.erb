@@ -5,7 +5,6 @@ NGINX='<%= node[:nginx][:dir] %>'
 APP_NAME=$1
 APP_DIR=$2/current
 APP_DOMAINS=`echo $3 | sed 's/,/ /g'`
-
 #-- Retrieve Proxy ip and port from package.json --#
 if [ -f $APP_DIR/package.json ]
 then
@@ -17,11 +16,26 @@ fi
 #-- Available Proxy Website --#
 if [ -n "$APP_DOMAINS" ] && [ -n "$APP_IP" ] && [ -n "$APP_PORT" ]
 then     
+	echo ""> $NGINX/sites-enabled/$APP_NAME.conf
+
+	DOMAINS=$(echo $APP_DOMAINS | tr " " "\n")
+	for DOMAIN in $DOMAINS
+	do
+		REDIR=`echo $DOMAIN | grep '^[^.]*\.[^.]*$'`
+		if [ -n "$REDIR" ]
+		then
+			echo "server {
+	server_name $REDIR;
+	rewrite ^(.*) http://$REDIR\$\1 permanent;
+}">> $NGINX/sites-enabled/$APP_NAME.conf
+		fi
+	done
+
 	echo "server {
 	listen 80;
 	server_name $APP_DOMAINS;
 	location / {
 		proxy_pass http://$APP_IP:$APP_PORT/;
 	}
-}"> $NGINX/sites-enabled/$APP_NAME.conf
+}">> $NGINX/sites-enabled/$APP_NAME.conf
 fi
