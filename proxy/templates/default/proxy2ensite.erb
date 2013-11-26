@@ -17,6 +17,7 @@ fi
 if [ -n "$APP_DOMAINS" ] && [ -n "$APP_IP" ] && [ -n "$APP_PORT" ]
 then     
 	echo ""> $NGINX/sites-enabled/$APP_NAME.conf
+	SERVERNAMES=""
 
 	DOMAINS=$(echo $APP_DOMAINS | tr " " "\n")
 	for DOMAIN in $DOMAINS
@@ -27,15 +28,26 @@ then
 			echo "server {
 	server_name $REDIR;
 	rewrite ^(.*) http://www.$REDIR\$1 permanent;
-}">> $NGINX/sites-enabled/$APP_NAME.conf
+}
+
+">> $NGINX/sites-enabled/$APP_NAME.conf
 		fi
+		
+		REDIR2=`echo $DOMAIN | grep '^[^.]*\.[^.]*\.[^.]*$'`
+		if [ -n "$REDIR2" ]
+		then
+			SERVERNAMES="$SERVERNAMES $REDIR2"
+		fi		
 	done
 
-	echo "server {
+	if [ -n "$SERVERNAMES" ]
+	then
+		echo "server {
 	listen 80;
 	server_name $APP_DOMAINS;
 	location / {
 		proxy_pass http://$APP_IP:$APP_PORT/;
 	}
 }">> $NGINX/sites-enabled/$APP_NAME.conf
+	fi
 fi
